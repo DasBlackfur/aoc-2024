@@ -31,34 +31,50 @@ pub fn solve_part1(input: &(Vec<(u32, u32)>, Vec<Vec<u32>>)) -> u32 {
     }).sum()
 }
 
+#[derive(Debug)]
 enum Update {
-    Part(u32, Vec<Update>),
-    End(u32)
+    Branch(u32, Vec<Update>)
 }
 
 #[aoc(day5, part2)]
 pub fn solve_part2(input: &(Vec<(u32, u32)>, Vec<Vec<u32>>)) -> u32 {
-    input.1.par_iter().filter(|update| {
+    input.1.iter().filter(|update| {
         update.windows(2).filter(|update_part| {
             !input.0.contains(&(update_part[0], update_part[1]))
         }).count() > 0
     }).map(|invalid_updates| {
-        
+        solve_tree(invalid_updates, &input.0)
     }).map(|valid_updates| {
         valid_updates[valid_updates.len() / 2]
     }).sum()
 }
 
-fn solve_tree(input: Vec<u32>, rules: Vec<(u32, u32)>) -> Vec<u32> {
+fn solve_tree(input: &Vec<u32>, rules: &Vec<(u32, u32)>) -> Vec<u32> {
+    dbg!(input);
     let applying_rules = rules.iter().filter(|rule| input.contains(&rule.0) && input.contains(&rule.1)).collect_vec();
 
-    let rule_tree = make_tree(applying_rules, input.len());
+    let rule_tree = make_tree(None, &applying_rules, input.len());
+    dbg!(find_longest_branch(&rule_tree, 0));
+
+    Vec::new()
 }
 
-fn make_tree(rules: Vec<&(u32, u32)>, remaining_recursions: usize) -> Vec<Update> {
-    rules.iter().map(|rule| {
-        Updates
-    })
+fn find_longest_branch(tree: &Vec<Update>, count: usize) -> Vec<Update> {
+    tree.iter().map(|branch| find)
+}
+
+fn make_tree(constraint: Option<u32>, rules: &Vec<&(u32, u32)>, remaining_recursions: usize) -> Vec<Update> {
+    rules.iter().filter(|rule| {
+        if let Some(must_num) = constraint {
+            return rule.0 == must_num
+        }
+        true
+    }).map(|rule| {
+        if remaining_recursions == 0 {
+            return Update::Branch(rule.0, vec![])
+        }
+        Update::Branch(rule.0, make_tree(Some(rule.1), rules, remaining_recursions - 1))
+    }).collect_vec()
 }
 
 #[cfg(test)]
