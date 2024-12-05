@@ -20,9 +20,11 @@ pub fn solve_part1(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     list1.sort();
     list2.sort();
 
-    list1.iter().zip(list2.iter()).map(|items| {
-        items.0.abs_diff(*items.1)
-    }).sum()
+    list1
+        .iter()
+        .zip(list2.iter())
+        .map(|items| items.0.abs_diff(*items.1))
+        .sum()
 }
 
 #[aoc(day1, part2)]
@@ -30,9 +32,10 @@ pub fn solve_part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     let list1 = input.0.clone();
     let list2 = input.1.clone();
 
-    list1.iter().map(|item1| {
-        item1 * list2.iter().filter(|item2| item1 == *item2).count() as u32
-    }).sum()
+    list1
+        .iter()
+        .map(|item1| item1 * list2.iter().filter(|item2| item1 == *item2).count() as u32)
+        .sum()
 }
 
 #[cfg(test)]

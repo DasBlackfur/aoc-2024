@@ -6,4 +6,4 @@ mod day03;
 mod day04;
 mod day05;
 
-aoc_lib!{ year = 2024 }
+aoc_lib! { year = 2024 }
