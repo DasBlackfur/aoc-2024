@@ -93,7 +93,7 @@ pub fn solve_part1(input: &(Vec<Vec<bool>>, (usize, usize, u8))) -> u32 {
                         None => end = true,
                     }
                 }
-            },
+            }
             2 => {
                 let x = guard.0.wrapping_add(1);
                 if x < 0 {
@@ -152,16 +152,23 @@ pub fn solve_part1(input: &(Vec<Vec<bool>>, (usize, usize, u8))) -> u32 {
 
 #[aoc(day6, part2)]
 pub fn solve_part2(input: &(Vec<Vec<bool>>, (usize, usize, u8))) -> u32 {
-    (0..input.0.len()).into_par_iter().map(|x| (0..input.0[0].len()).map(move |y| {
-        if (x, y) != (input.1.0, input.1.1) && !input.0[x][y] {
-            let mut modified_input = input.clone();
-            modified_input.0[x][y] = true;
-            if solve_part1(&modified_input) == u32::MAX {
-                return 1_u32;
-            }
-        }
-        0_u32
-    }).sum::<u32>()).sum::<u32>()
+    (0..input.0.len())
+        .into_par_iter()
+        .map(|x| {
+            (0..input.0[0].len())
+                .map(move |y| {
+                    if (x, y) != (input.1 .0, input.1 .1) && !input.0[x][y] {
+                        let mut modified_input = input.clone();
+                        modified_input.0[x][y] = true;
+                        if solve_part1(&modified_input) == u32::MAX {
+                            return 1_u32;
+                        }
+                    }
+                    0_u32
+                })
+                .sum::<u32>()
+        })
+        .sum::<u32>()
 }
 
 #[cfg(test)]
