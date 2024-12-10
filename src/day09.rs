@@ -136,7 +136,8 @@ pub fn solve_part2(input: &[Block]) -> usize {
         unchunked.append(&mut vec![chunk.1; chunk.0]);
     });
 
-    unchunked.iter()
+    unchunked
+        .iter()
         .enumerate()
         .map(|(pos, block)| match block {
             Block::File(value) => pos * value,
@@ -152,7 +153,7 @@ mod tests {
     #[test]
     fn task_sample() {
         let input = input_generator(r#"2333133121414131402"#);
-        //assert_eq!(solve_part1(&input), 1928);
+        assert_eq!(solve_part1(&input), 1928);
         assert_eq!(solve_part2(&input), 2858);
     }
 }
