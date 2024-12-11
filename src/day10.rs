@@ -41,7 +41,7 @@ fn check_neighbors(map: &[Vec<u8>], x: usize, y: usize) -> Vec<(usize, usize)> {
 
         if up == search_height {
             if up == 9 {
-                trail_count.push((x -1, y));
+                trail_count.push((x - 1, y));
             } else {
                 trail_count.append(&mut check_neighbors(map, x - 1, y));
             }
@@ -52,7 +52,7 @@ fn check_neighbors(map: &[Vec<u8>], x: usize, y: usize) -> Vec<(usize, usize)> {
 
         if down == search_height {
             if down == 9 {
-                trail_count.push((x +1, y));
+                trail_count.push((x + 1, y));
             } else {
                 trail_count.append(&mut check_neighbors(map, x + 1, y));
             }
@@ -61,7 +61,7 @@ fn check_neighbors(map: &[Vec<u8>], x: usize, y: usize) -> Vec<(usize, usize)> {
     if let Some(right) = map[x].get(y + 1) {
         if *right == search_height {
             if *right == 9 {
-                trail_count.push((x, y +1));
+                trail_count.push((x, y + 1));
             } else {
                 trail_count.append(&mut check_neighbors(map, x, y + 1));
             }
@@ -70,7 +70,7 @@ fn check_neighbors(map: &[Vec<u8>], x: usize, y: usize) -> Vec<(usize, usize)> {
     if let Some(left) = map[x].get(y.wrapping_sub(1)) {
         if *left == search_height {
             if *left == 9 {
-                trail_count.push((x, y -1));
+                trail_count.push((x, y - 1));
             } else {
                 trail_count.append(&mut check_neighbors(map, x, y - 1));
             }
