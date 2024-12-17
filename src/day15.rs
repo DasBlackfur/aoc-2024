@@ -219,7 +219,12 @@ fn move_box_horizontal(map: &mut [Vec<char>], pos_now: (usize, usize), movement:
     map[pos_target.1][pos_target.0] = c;
 }
 
-fn move_box_vertical(map: &mut [Vec<char>], pos_now: (usize, usize), movement: (isize, isize), redirect: bool) {
+fn move_box_vertical(
+    map: &mut [Vec<char>],
+    pos_now: (usize, usize),
+    movement: (isize, isize),
+    redirect: bool,
+) {
     let pos_then = (
         ((pos_now.0 as isize + movement.0) as usize),
         ((pos_now.1 as isize + movement.1) as usize),
