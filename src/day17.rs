@@ -108,7 +108,9 @@ pub fn solve_part2(input: &((usize, usize, usize), Vec<u8>)) -> usize {
             }
         }
         // 2,4,1,2,7,5,4,1,1,3,5,5,0,3,3,0
-        if output.strip_prefix(',').unwrap() == input.1.iter().join(",")  || (output.ends_with(",0,3,3,0") && output.len() == 16*2) {
+        if output.strip_prefix(',').unwrap() == input.1.iter().join(",")
+            || (output.ends_with(",0,3,3,0") && output.len() == 16 * 2)
+        {
             break;
         } else {
             dbg!(&output);

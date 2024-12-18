@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 use aoc_runner_derive::{aoc, aoc_generator};
 
@@ -13,7 +13,7 @@ pub fn input_generator(input: &str) -> Vec<Vec<char>> {
 #[aoc(day16, part1)]
 pub fn solve_part1(input: &[Vec<char>]) -> usize {
     let input = input.to_vec();
-    let mut positions: HashSet<(u8, usize, usize)> = HashSet::new();
+    let mut positions: HashMap<(u8, usize, usize), usize> = HashMap::new();
     let start_line = input
         .iter()
         .enumerate()
@@ -60,17 +60,21 @@ fn check_tile(
     pos: &(usize, usize),
     score: usize,
     goal: &(usize, usize),
-    positions: &mut HashSet<(u8, usize, usize)>,
+    positions: &mut HashMap<(u8, usize, usize), usize>,
 ) -> usize {
     if map[pos.1][pos.0] == '#' {
         return usize::MAX;
     } else if pos == goal {
         return score;
     }
-    if positions.get(&(direction, pos.0, pos.1)).is_some() {
-        return usize::MAX;
+    if let Some(prev_score) = positions.get(&(direction, pos.0, pos.1)) {
+        if &score >= prev_score {
+            return usize::MAX;
+        } else {
+            positions.insert((direction, pos.0, pos.1), score);
+        }
     } else {
-        positions.insert((direction, pos.0, pos.1));
+        positions.insert((direction, pos.0, pos.1), score);
     }
     if score == 0 {
         let left = check_tile(map, 0, &(pos.0 - 1, pos.1), 2001, goal, positions);
@@ -159,7 +163,7 @@ mod tests {
 #S..#.....#...#
 ###############"#,
         );
-        //assert_eq!(solve_part1(&input), 7036);
+        assert_eq!(solve_part1(&input), 7036);
         assert_eq!(solve_part2(&input), 0);
     }
 }
