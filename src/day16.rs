@@ -136,7 +136,7 @@ fn check_tile(
 }
 
 #[aoc(day16, part2)]
-pub fn solve_part2(input: &[Vec<char>]) -> u32 {
+pub fn solve_part2(_input: &[Vec<char>]) -> u32 {
     0
 }
 
