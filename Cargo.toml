@@ -10,3 +10,4 @@ regex = "*"
 itertools = "*"
 rayon = "*"
 image = "*"
+phf = { version = "*", features = ["macros"]}
