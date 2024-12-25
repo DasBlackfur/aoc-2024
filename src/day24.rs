@@ -6,7 +6,7 @@ use aoc_runner_derive::{aoc, aoc_generator};
 pub enum OP {
     And,
     Or,
-    Xor
+    Xor,
 }
 
 type State = HashMap<String, Option<bool>>;
@@ -14,21 +14,36 @@ type State = HashMap<String, Option<bool>>;
 #[aoc_generator(day24)]
 pub fn input_generator(input: &str) -> (State, Vec<(String, String, String, OP)>) {
     let mut input = input.split("\n\n");
-    let state = input.next().unwrap().split("\n").map(|state_line| (state_line[0..3].to_owned(), Some(state_line[5..].parse::<u8>().unwrap() != 0))).collect();  
-    let connections = input.next().unwrap().split("\n").map(|conn_line| {
-        let mut conn_line = conn_line.split_whitespace();
-        let conn_a = conn_line.next().unwrap().to_owned();
-        let op = match conn_line.next().unwrap() {
-            "AND" => OP::And,
-            "OR" => OP::Or,
-            "XOR" => OP::Xor,
-            _ => unreachable!()
-        };
-        let conn_b = conn_line.next().unwrap().to_owned();
-        conn_line.next();
-        let conn_r = conn_line.next().unwrap().to_owned();
-        (conn_a, conn_b, conn_r, op)
-    }).collect();
+    let state = input
+        .next()
+        .unwrap()
+        .split("\n")
+        .map(|state_line| {
+            (
+                state_line[0..3].to_owned(),
+                Some(state_line[5..].parse::<u8>().unwrap() != 0),
+            )
+        })
+        .collect();
+    let connections = input
+        .next()
+        .unwrap()
+        .split("\n")
+        .map(|conn_line| {
+            let mut conn_line = conn_line.split_whitespace();
+            let conn_a = conn_line.next().unwrap().to_owned();
+            let op = match conn_line.next().unwrap() {
+                "AND" => OP::And,
+                "OR" => OP::Or,
+                "XOR" => OP::Xor,
+                _ => unreachable!(),
+            };
+            let conn_b = conn_line.next().unwrap().to_owned();
+            conn_line.next();
+            let conn_r = conn_line.next().unwrap().to_owned();
+            (conn_a, conn_b, conn_r, op)
+        })
+        .collect();
 
     (state, connections)
 }
@@ -47,27 +62,35 @@ pub fn solve_part1(input: &(State, Vec<(String, String, String, OP)>)) -> usize 
                     let result = match conn.3 {
                         OP::And => x & y,
                         OP::Or => x | y,
-                        OP::Xor => x ^ y
+                        OP::Xor => x ^ y,
                     };
                     state.insert(conn.2.clone(), Some(result));
                     to_remove.push(i);
                 }
             }
         }
-        conns = conns.into_iter().enumerate().filter(|(i, _)| !to_remove.contains(i)).map(|(_, c)| c).collect();
+        conns = conns
+            .into_iter()
+            .enumerate()
+            .filter(|(i, _)| !to_remove.contains(i))
+            .map(|(_, c)| c)
+            .collect();
     }
 
     let mut num = 0;
 
-    state.iter().filter(|(key, _)| key.starts_with("z")).for_each(|(key, value)| {
-        let index: u8 = key[1..].parse().unwrap();
-        num |= (value.unwrap() as usize)<<index;
-    });
+    state
+        .iter()
+        .filter(|(key, _)| key.starts_with("z"))
+        .for_each(|(key, value)| {
+            let index: u8 = key[1..].parse().unwrap();
+            num |= (value.unwrap() as usize) << index;
+        });
     num
 }
 
 #[aoc(day24, part2)]
-pub fn solve_part2(input: &(State, Vec<(String, String, String, OP)>)) -> usize {
+pub fn solve_part2(_input: &(State, Vec<(String, String, String, OP)>)) -> usize {
     0
 }
 
@@ -77,7 +100,8 @@ mod tests {
 
     #[test]
     fn task_sample() {
-        let input = input_generator(r#"x00: 1
+        let input = input_generator(
+            r#"x00: 1
 x01: 0
 x02: 1
 x03: 1
@@ -123,7 +147,8 @@ bqk OR frj -> z07
 y03 OR x01 -> nrd
 hwm AND bqk -> z03
 tgd XOR rvg -> z12
-tnw OR pbm -> gnj"#);
+tnw OR pbm -> gnj"#,
+        );
         assert_eq!(solve_part1(&input), 2024);
         assert_eq!(solve_part2(&input), 0);
     }

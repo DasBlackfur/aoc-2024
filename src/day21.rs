@@ -119,7 +119,7 @@ fn arrow_to_arrow(code: &Vec<char>) -> Vec<char> {
     for num in code {
         let target_pos = REMOTE_MAP.get(num).unwrap();
 
-        if current_pos.0 == 0 && target_pos.1 == 0 || prev_y { 
+        if current_pos.0 == 0 && target_pos.1 == 0 || prev_y {
             prev_y = false;
             let y = target_pos.1 - current_pos.1;
             match y.cmp(&0) {
@@ -156,13 +156,13 @@ fn arrow_to_arrow(code: &Vec<char>) -> Vec<char> {
 }
 
 #[aoc(day21, part2)]
-pub fn solve_part2(input: &[Vec<char>]) -> usize {
+pub fn solve_part2(_input: &[Vec<char>]) -> usize {
     0
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::day21::{input_generator, solve_part1, solve_part2};
+    use crate::day21::{input_generator, /*solve_part1,*/ solve_part2};
 
     #[test]
     fn task_sample() {
